@@ -1,1 +1,5 @@
+/node_modules/
+/public/build/
 pb_data
+
+.DS_Store
