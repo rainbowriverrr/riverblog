@@ -5,7 +5,7 @@ import (
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
-	"github.com/rainbowriverrr/riverblog/internal/models"
+	"github.com/rainbowriverrr/riverblog/pkg/models"
 )
 
 func main() {
@@ -55,6 +55,8 @@ func main() {
 		return nil
 
 	})
+
+	app.OnBeforeServe().Add(initRoutes)
 
 	if err := app.Start(); err != nil {
 		panic(err)
