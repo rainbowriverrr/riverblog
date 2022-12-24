@@ -12,7 +12,7 @@ var homeRoute echo.Route = echo.Route{
 	Method: http.MethodGet,
 	Path:   "/",
 	Handler: func(c echo.Context) error {
-		return c.File("frontend/dist/index.html")
+		return c.File("templates/mainpage.html")
 	},
 }
 
@@ -20,7 +20,7 @@ var homeRoute echo.Route = echo.Route{
 func initRoutes(e *core.ServeEvent) error {
 
 	e.Router.AddRoute(homeRoute)
-	e.Router.Static("/", "frontend/dist")
+	e.Router.Static("/", "frontend/public")
 
 	return nil
 }
