@@ -8,7 +8,7 @@ import (
 func initRoutes(e *core.ServeEvent) error {
 
 	e.Router.GET("/", HomeHandler)
-	e.Router.Static("/", "frontend/public")
+	e.Router.Static("/", "frontend/dist")
 
 	return nil
 }
