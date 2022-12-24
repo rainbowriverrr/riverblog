@@ -8,8 +8,24 @@ import (
 	"github.com/rainbowriverrr/riverblog/pkg/models"
 )
 
+type App struct {
+	*pocketbase.PocketBase
+	templateRegister *TemplateRegistry
+}
+
 func main() {
-	app := pocketbase.New()
+
+	templates, err := newTemplateCache()
+	if err != nil {
+		panic(err)
+	}
+
+	app := &App{
+		PocketBase: pocketbase.New(),
+		templateRegister: &TemplateRegistry{
+			templates: templates,
+		},
+	}
 
 	app.OnAfterBootstrap().Add(func(e *core.BootstrapEvent) error {
 
@@ -17,7 +33,7 @@ func main() {
 
 		// initialize collections
 		author := &models.Author{}
-		err := author.InitCollection(app)
+		err := author.InitCollection(app.PocketBase)
 		if err != nil {
 			log.Println(err)
 			return err
@@ -26,7 +42,7 @@ func main() {
 		}
 
 		tag := &models.Tag{}
-		err = tag.InitCollection(app)
+		err = tag.InitCollection(app.PocketBase)
 		if err != nil {
 			log.Println(err)
 			return err
@@ -35,7 +51,7 @@ func main() {
 		}
 
 		post := &models.Post{}
-		err = post.InitCollection(app)
+		err = post.InitCollection(app.PocketBase)
 		if err != nil {
 			log.Println(err)
 			return err
@@ -44,7 +60,7 @@ func main() {
 		}
 
 		postTag := &models.PostTag{}
-		err = postTag.InitCollection(app)
+		err = postTag.InitCollection(app.PocketBase)
 		if err != nil {
 			log.Println(err)
 			return err
@@ -57,6 +73,10 @@ func main() {
 	})
 
 	app.OnBeforeServe().Add(initRoutes)
+	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+		e.Router.Renderer = app.templateRegister
+		return nil
+	})
 
 	if err := app.Start(); err != nil {
 		panic(err)

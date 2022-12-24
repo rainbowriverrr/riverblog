@@ -1,11 +1,13 @@
+{{define "base"}}
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
-    <title>RiverBlog</title>
+    <title>{{template "title" .}}</title>
     <link rel="stylesheet" href="/global.css">
     <script defer src="/build/bundle.js"></script>
 </head>
 <body>
-    <my-app name="River"> </my-app>
+    {{template "main" .}}
 </body>
 </html>
+{{end}}
