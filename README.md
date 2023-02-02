@@ -1,3 +1,3 @@
 # River Blog
 
-This is a server side rendered blogging app!
+This is a server side rendered blogging app!  Not usable!
